@@ -10,12 +10,12 @@ export const getTopics = async () => {
 };
 
 export const getArticles = async (topic, ChosenSort, Pagination) => {
-    let str = '/articles'
+    let str = '/articles?'
     if (topic) {
         console.log(topic)
-        str += `?topic=${topic}`
+        str += `topic=${topic}&`
     }
-    str += `?sort_by=${ChosenSort}&order=desc&limit=${Pagination}`
+    str += `sort_by=${ChosenSort}&order=desc&limit=${Pagination}`
     const {data} = await newsApi.get(str)
     return data.articles
 };

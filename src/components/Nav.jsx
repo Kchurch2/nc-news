@@ -15,7 +15,7 @@ const Navbar = ({ Topics, setTopics }) => {
         <nav className = "nav-bar">
         {Topics.map((topic) => {
             return (
-                <Link className="nav-list" key={topic.slug} to ={`/${topic.slug}`}>
+                <Link className="nav-list" key={topic.slug} to ={`/articles/${topic.slug}`}>
                     {topic.slug}
                 </Link>
             )
