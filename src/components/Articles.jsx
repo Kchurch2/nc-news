@@ -5,7 +5,7 @@ import { getArticles } from "../utils/api";
 const Articles = () => {
     const { topic } = useParams()
     const [Articles, setArticles] = useState([{}])
-    const [ChosenSort, setChosenSort] = useState("") 
+    const [ChosenSort, setChosenSort] = useState("created_at") 
     const [Pagination, setPagination] = useState(10) 
     useEffect(() => {
         getArticles(topic, ChosenSort, Pagination).then((articleList) => {
@@ -16,7 +16,7 @@ const Articles = () => {
     }, [Articles, topic, ChosenSort, Pagination])
     return (
         <div>
-        <h2> Articles </h2>
+        <h2> {topic ? topic[0].toUpperCase() + topic.substring(1,): "All"} Articles </h2>
         <section className ="filter-bar"> 
             <select id="filter-pages"
                 name="filter-pages"
@@ -24,9 +24,9 @@ const Articles = () => {
                     e.preventDefault();
                     setPagination(e.target.value);
                 }}>
-                <option selected value="10" >View 10 per Page</option>      
-                <option value="20" >View 20 per Page</option>           
-                <option value="">View All</option>
+                <option selected value="10" >View 10</option>      
+                <option value="20" >View 20</option>           
+                <option value="100">View 100</option>
             </select>
             <select id="sort-by"
                 name="sort-by"
@@ -34,8 +34,8 @@ const Articles = () => {
                     e.preventDefault();
                     setChosenSort(e.target.value);
                 }}>
-                <option value="date" selected>Date</option>
-                <option value="comments" >View Most Commented</option>      
+                <option value="created_at" selected> View Most Recent</option>
+                <option value="comment_count" >View Most Commented</option>      
                 <option value="votes" >View Most Popular</option>           
             </select>
         </section>
@@ -43,12 +43,12 @@ const Articles = () => {
         {Articles.map((article) => {
             return (
             <section className ="article-box">    
-            <Link to={`/articles/${article.id}`} key={article.id}>
+            <Link to={`/article/${article.article_id}`} key={article.id}>
             <h2>{article.title}</h2> 
             <p>{article.topic}</p> 
-            <p>{article.created_at}</p> 
+            <p>{new Date(article.created_at).toUTCString()}</p> 
             <p>{article.author}</p> 
-            <p> Votes: {article.votes}</p> 
+            <p> Votes: {article.votes}, Comments: {article.comment_count}</p> 
             </Link> 
             </section>
             )

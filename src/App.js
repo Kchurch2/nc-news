@@ -3,6 +3,8 @@ import {useState } from "react";
 import './App.css';
 import Navbar from './components/Nav';
 import Articles from "./components/Articles";
+import SingleArticle from "./components/SIngleArticle";
+
 
 function App() {
   const [Topics, setTopics] = useState([{}])
@@ -19,6 +21,9 @@ function App() {
         </Route>
         <Route exact path ="/articles/:topic">
         <Articles />
+        </Route>
+        <Route exact path ="/article/:article_id">
+        <SingleArticle />
         </Route>
       </Switch>
     </div>

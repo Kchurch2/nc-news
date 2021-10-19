@@ -13,6 +13,7 @@ const Navbar = ({ Topics, setTopics }) => {
     }, [Topics, setTopics])
     return (
         <nav className = "nav-bar">
+        <Link className="nav-list" to="/"> home </Link>
         {Topics.map((topic) => {
             return (
                 <Link className="nav-list" key={topic.slug} to ={`/articles/${topic.slug}`}>
