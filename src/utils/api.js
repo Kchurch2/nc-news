@@ -31,6 +31,14 @@ export const patchVotes = async (article_id) => {
     })
 }
 
+export const patchCommentVote = async (comment_id) => {
+    return newsApi.patch(`/comments/${comment_id}`, {"inc_votes": 1})
+    .then((res)=> {
+        console.log(res.data)
+        return res.data.comment
+    })
+}
+
 export const postComment = async (comment, article_id) => {
     console.log(comment, article_id)
     return newsApi.post(`/articles/${article_id}/comments?limit=100`, ({"username": "weegembump", "body": comment }))

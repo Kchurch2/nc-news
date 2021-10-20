@@ -10,7 +10,7 @@ const Navbar = ({ Topics, setTopics, setPage}) => {
                 setTopics(topicList)
             }
         })
-    }, [Topics, setTopics])
+    }, [setTopics])
     return (
         <nav className = "nav-bar">
         <Link onClick={()=>{setPage(1)}} className="nav-list" to="/"> home </Link>

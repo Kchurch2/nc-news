@@ -15,7 +15,7 @@ const Articles = ({ Page, setPage }) => {
             setArticles(articleList)
             } 
         })
-    }, [Articles, topic, ChosenSort, Pagination, Page])
+    }, [Page, Pagination, ChosenSort, topic])
     return (
         <div>
         <h2> {topic ? topic[0].toUpperCase() + topic.substring(1,): "All"} Articles </h2>

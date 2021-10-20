@@ -1,16 +1,40 @@
 import { useEffect, useState } from "react"
 import {useParams} from "react-router-dom";
-import { getArticle, getComments, patchVotes, postComment} from "../utils/api";
+import { getArticle, getComments, patchVotes, postComment, patchCommentVote} from "../utils/api";
+
 
 const SingleArticle = () => {
 const [ articleData , setArticleData] = useState([])
 const [ CommentData , setCommentData] = useState([])
 const [ Votes, setVotes] = useState(0)
 const [ VoteChange , setVoteChange] = useState(0)
+const [ CommentVoteChange , setCommentVoteChange] = useState(0)
+
 const [ Error, SetError ] = useState(false)
 const [commentText, setCommentText] = useState('')
 
 const {article_id} = useParams()
+
+
+const CommentVote = ({comment}) => {
+    const handleCommentVote = (e) => {
+        setCommentVoteChange((currVote) => { return currVote += 1})
+        patchCommentVote(comment.comment_id)
+        .catch((err)=>{
+            console.dir(err)
+            setCommentVoteChange((currVote) => { return currVote -= 1}); 
+        })
+    }
+
+    return (
+    <section className = "comment-meta2">
+    <label htmlFor="add-vote" className="label"> Up-Vote: </label> 
+     <button id="add-vote" value={comment.comment_id} onClick={handleCommentVote}> {comment.votes + CommentVoteChange}</button>
+     {Error ? <span> Please Try Again </span> : null}
+     </section>
+     )
+}
+
 
     useEffect(() => {
         getArticle(article_id).then((articleData)=> {
@@ -23,7 +47,7 @@ const {article_id} = useParams()
         getComments(article_id).then((commentData)=> {
         setCommentData(commentData)
         })
-    }, [article_id, commentText])
+    }, [article_id, commentText, CommentVoteChange ])
 
     const handleVote = () => {
         SetError(false)
@@ -34,11 +58,13 @@ const {article_id} = useParams()
         })
     }
 
+
     const handleComment = (e) => {
         e.preventDefault()
         postComment(commentText, article_id)
         setCommentText('')
     }
+
 
     return (
         <div>
@@ -66,7 +92,7 @@ const {article_id} = useParams()
                 return(
                     <li className="comment-list" key={comment.comment_id}>
                     <p className="comment-meta1">{comment.author}</p>
-                    <p className="comment-meta2"> Votes: {comment.votes}</p>
+                    < CommentVote comment={comment} CommentVoteChange={CommentVoteChange} setCommentVoteChange = {setCommentVoteChange}/>
                     <p className="comment-meta3">{new Date(comment.created_at).toUTCString()}</p>
                     <p className="comment-body">{comment.body}</p>
                     </li>
