@@ -47,7 +47,7 @@ const CommentVote = ({comment}) => {
         getComments(article_id).then((commentData)=> {
         setCommentData(commentData)
         })
-    }, [article_id, commentText, CommentVoteChange ])
+    }, [article_id, commentText, setCommentText, CommentVoteChange ])
 
     const handleVote = () => {
         SetError(false)

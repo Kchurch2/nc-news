@@ -4,7 +4,7 @@ import './App.css';
 import Navbar from './components/Nav';
 import Articles from "./components/Articles";
 import SingleArticle from "./components/SIngleArticle";
-import {Login, Logout} from "./components/Login";
+import {LoginBar } from "./components/Login";
 
 
 
@@ -15,28 +15,28 @@ function App() {
   const [User, setUser] = useState(null)
 
   const login = (username) => {
-    setUser(username)
-    localStorage.setItem("loggedin", username)
+    setUser(JSON.stringify(username))
+    localStorage.setItem('loggedin', JSON.stringify(username))
   }
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem("loggedin")
+    localStorage.removeItem('loggedin')
   }
 
   useEffect(() => {
-    const prevUser = localStorage.getItem("loggedin")
+    const prevUser = localStorage.getItem('loggedin')
     if(prevUser) {
       setUser(prevUser)
     }
-  }, [])
+  }, [User])
 
   return (
     <BrowserRouter>
     <div className="App">
       <header className="App-header">
         <Link onClick={()=>{setPage(1)}} to="/"><h1> NC News </h1></Link>
-        {User ? <Login login={login} User={User}/> : <Logout User={User} logout={logout}/>}        
+       <LoginBar login={login} User={User} logout={logout}/>    
         <Navbar setTopics={setTopics} Topics={Topics} setPage={setPage}/>
       </header>
       <Switch>
