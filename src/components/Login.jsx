@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export const LoginBar = ({login, User, logout}) => {
+export const LoginBar = ({BadUser,setBadUser, login, User, logout}) => {
     const [LoginUser, setLoginUser] = useState('')
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -17,8 +17,12 @@ export const LoginBar = ({login, User, logout}) => {
         <section>
         <form onSubmit = {handleSubmit}>
         <label htmlFor="login"></label>
-        <input disabled={User} value={LoginUser} onChange={(e) => setLoginUser(e.target.value)} type="text" id="login-value"></input>
+        <input disabled={User} value={LoginUser} onChange={((e) => {
+            setLoginUser(e.target.value)
+            setBadUser(null)
+        })} type="text" id="login-value"></input>
         </form>
+        {BadUser ? <p>Invalid Username</p> : null}
         <button onClick={handeClick}> Logout </button>
         </section>
 

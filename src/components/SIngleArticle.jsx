@@ -3,12 +3,12 @@ import {useParams} from "react-router-dom";
 import { getArticle, getComments, patchVotes, postComment, patchCommentVote} from "../utils/api";
 
 
-const SingleArticle = () => {
+const SingleArticle = ({User}) => {
 const [ articleData , setArticleData] = useState([])
 const [ CommentData , setCommentData] = useState([])
 const [ Votes, setVotes] = useState(0)
 const [ VoteChange , setVoteChange] = useState(0)
-const [ CommentVoteChange , setCommentVoteChange] = useState(0)
+
 
 const [ Error, SetError ] = useState(false)
 const [commentText, setCommentText] = useState('')
@@ -17,9 +17,10 @@ const {article_id} = useParams()
 
 
 const CommentVote = ({comment}) => {
+    const [ CommentVoteChange , setCommentVoteChange] = useState(0)
     const handleCommentVote = (e) => {
         setCommentVoteChange((currVote) => { return currVote += 1})
-        patchCommentVote(comment.comment_id)
+        patchCommentVote(e.target.value)
         .catch((err)=>{
             console.dir(err)
             setCommentVoteChange((currVote) => { return currVote -= 1}); 
@@ -47,7 +48,7 @@ const CommentVote = ({comment}) => {
         getComments(article_id).then((commentData)=> {
         setCommentData(commentData)
         })
-    }, [article_id, commentText, setCommentText, CommentVoteChange ])
+    }, [article_id, commentText, setCommentText])
 
     const handleVote = () => {
         SetError(false)
@@ -61,7 +62,7 @@ const CommentVote = ({comment}) => {
 
     const handleComment = (e) => {
         e.preventDefault()
-        postComment(commentText, article_id)
+        postComment(commentText, article_id, User)
         setCommentText('')
     }
 
@@ -92,7 +93,7 @@ const CommentVote = ({comment}) => {
                 return(
                     <li className="comment-list" key={comment.comment_id}>
                     <p className="comment-meta1">{comment.author}</p>
-                    < CommentVote comment={comment} CommentVoteChange={CommentVoteChange} setCommentVoteChange = {setCommentVoteChange}/>
+                    < CommentVote comment={comment} />
                     <p className="comment-meta3">{new Date(comment.created_at).toUTCString()}</p>
                     <p className="comment-body">{comment.body}</p>
                     </li>
