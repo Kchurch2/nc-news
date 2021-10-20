@@ -9,14 +9,8 @@ export const getTopics = async () => {
     return data.topics
 };
 
-export const getArticles = async (topic, ChosenSort, Pagination) => {
-    console.log(Pagination)
-    let str = '/articles?'
-    if (topic) {
-        str += `topic=${topic}&`
-    }
-    str += `sort_by=${ChosenSort}&order=desc&limit=${parseInt(Pagination)}`
-    const {data} = await newsApi.get(str)
+export const getArticles = async (topic, ChosenSort, Pagination, page) => {
+    const {data} = await newsApi.get('/articles', {params : {topic: topic, sort_by: ChosenSort, limit : Pagination, page : page}})
     return data.articles
 };
 
@@ -26,7 +20,7 @@ export const getArticle = async (article_id) => {
 }
 
 export const getComments = async (article_id) => {
-    const {data} = await newsApi.get(`/articles/${article_id}/comments`)
+    const {data} = await newsApi.get(`/articles/${article_id}/comments?limit=100`)
     return data.comments
 }
 
@@ -34,5 +28,14 @@ export const patchVotes = async (article_id) => {
     return newsApi.patch(`/articles/${article_id}`, {"inc_votes": 1})
     .then((res)=> {
         return res.data.votes
+    })
+}
+
+export const postComment = async (comment, article_id) => {
+    console.log(comment, article_id)
+    return newsApi.post(`/articles/${article_id}/comments?limit=100`, ({"username": "weegembump", "body": comment }))
+    .then((res) => {
+        console.log(res.data)
+        return res.data.comment
     })
 }

@@ -2,38 +2,42 @@ import { useEffect, useState} from "react";
 import { Link, useParams} from "react-router-dom";
 import { getArticles } from "../utils/api";
 
-const Articles = () => {
+const Articles = ({ Page, setPage }) => {
     const { topic } = useParams()
     const [Articles, setArticles] = useState([{}])
     const [ChosenSort, setChosenSort] = useState("created_at") 
     const [Pagination, setPagination] = useState(10) 
+
+
     useEffect(() => {
-        getArticles(topic, ChosenSort, Pagination).then((articleList) => {
+        getArticles(topic, ChosenSort, Pagination, Page).then((articleList) => {
             if(articleList.length >0) {
             setArticles(articleList)
             } 
         })
-    }, [Articles, topic, ChosenSort, Pagination])
+    }, [Articles, topic, ChosenSort, Pagination, Page])
     return (
         <div>
         <h2> {topic ? topic[0].toUpperCase() + topic.substring(1,): "All"} Articles </h2>
         <section className ="filter-bar"> 
             <select id="filter-pages"
                 name="filter-pages"
-                onChange={(e) => {
+                onChange={((e) => {
+                    setPage(1)
                     e.preventDefault();
                     setPagination(e.target.value);
-                }}>
+                })}>
                 <option selected value="10" >View 10</option>      
                 <option value="20" >View 20</option>           
                 <option value="100">View 100</option>
             </select>
             <select id="sort-by"
                 name="sort-by"
-                onChange={(e) => {
+                onChange={((e) => {
+                    setPage(1)
                     e.preventDefault();
-                    setChosenSort(e.target.value);
-                }}>
+                        setChosenSort(e.target.value);
+                })}>
                 <option value="created_at" selected> View Most Recent</option>
                 <option value="comment_count" >View Most Commented</option>      
                 <option value="votes" >View Most Popular</option>           
@@ -54,6 +58,9 @@ const Articles = () => {
             )
         })}
         </ul>
+        <button className="pgeBtn" disabled={Page <=1} onClick={() => {setPage((currPage) => currPage -1)}}> Prev Page </button >
+        <span> Page {Page} </span>
+        <button className="pgeBtn" onClick={() => {setPage((currPage) => currPage +1)}}> Next Page </button >
         </div>
     )
     

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getTopics } from "../utils/api";
 
 
-const Navbar = ({ Topics, setTopics }) => {
+const Navbar = ({ Topics, setTopics, setPage}) => {
     useEffect(() => {
         getTopics().then((topicList) => {
             if(topicList.length >0) {
@@ -13,10 +13,10 @@ const Navbar = ({ Topics, setTopics }) => {
     }, [Topics, setTopics])
     return (
         <nav className = "nav-bar">
-        <Link className="nav-list" to="/"> home </Link>
+        <Link onClick={()=>{setPage(1)}} className="nav-list" to="/"> home </Link>
         {Topics.map((topic) => {
             return (
-                <Link className="nav-list" key={topic.slug} to ={`/articles/${topic.slug}`}>
+                <Link onClick={()=>{setPage(1)}}className="nav-list" key={topic.slug} to ={`/articles/${topic.slug}`}>
                     {topic.slug}
                 </Link>
             )

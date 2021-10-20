@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {useParams} from "react-router-dom";
-import { getArticle, getComments, patchVotes} from "../utils/api";
+import { getArticle, getComments, patchVotes, postComment} from "../utils/api";
 
 const SingleArticle = () => {
 const [ articleData , setArticleData] = useState([])
@@ -8,6 +8,7 @@ const [ CommentData , setCommentData] = useState([])
 const [ Votes, setVotes] = useState(0)
 const [ VoteChange , setVoteChange] = useState(0)
 const [ Error, SetError ] = useState(false)
+const [commentText, setCommentText] = useState('')
 
 const {article_id} = useParams()
 
@@ -22,7 +23,7 @@ const {article_id} = useParams()
         getComments(article_id).then((commentData)=> {
         setCommentData(commentData)
         })
-    }, [article_id])
+    }, [article_id, commentText])
 
     const handleVote = () => {
         SetError(false)
@@ -32,6 +33,13 @@ const {article_id} = useParams()
             setVoteChange((currVote) => { return currVote -= 1}); 
         })
     }
+
+    const handleComment = (e) => {
+        e.preventDefault()
+        postComment(commentText, article_id)
+        setCommentText('')
+    }
+
     return (
         <div>
         <section className="article">
@@ -41,14 +49,16 @@ const {article_id} = useParams()
         <p> Published: {new Date(articleData.created_at).toUTCString()}</p>
         <label htmlFor="add-vote" className="label">Up-Vote: </label> 
         <button id="add-vote" onClick={handleVote}>{ Votes + VoteChange }</button>
+        {Error ? <span> Please Try Again </span> : null}
         </section>
             <h2 className="title">{articleData.title}</h2>
             <p className="article-body">{articleData.body}</p>
         </section>
-        <section className="comment-input">
+        <form className="comment-input" onSubmit={handleComment}>
         <label htmlFor="comment-input" className="label"> Add a Comment</label>
-            <input></input>
-        </section>
+        <input type='text' onChange={((e)=>{setCommentText(e.target.value)})} value={commentText} id='comment-input'></input>
+        <button type='submit'> Post Comment </button>
+        </form>
         <section className ="comments">
             <h3> Comments</h3>
             <ul>
@@ -56,7 +66,7 @@ const {article_id} = useParams()
                 return(
                     <li className="comment-list" key={comment.comment_id}>
                     <p className="comment-meta1">{comment.author}</p>
-                    <p className="comment-meta2">{comment.votes}</p>
+                    <p className="comment-meta2"> Votes: {comment.votes}</p>
                     <p className="comment-meta3">{new Date(comment.created_at).toUTCString()}</p>
                     <p className="comment-body">{comment.body}</p>
                     </li>
