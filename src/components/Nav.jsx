@@ -21,6 +21,7 @@ const Navbar = ({ Topics, setTopics, setPage}) => {
                 </Link>
             )
         })}
+        <Link to="/users"> authors </Link>
         </nav>
     )
     

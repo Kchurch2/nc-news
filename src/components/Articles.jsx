@@ -7,13 +7,26 @@ const Articles = ({ Page, setPage }) => {
     const [Articles, setArticles] = useState([{}])
     const [ChosenSort, setChosenSort] = useState("created_at") 
     const [Pagination, setPagination] = useState(10) 
+    const [EndList, setEndList] = useState(false) 
+    const [IsError, SetIsError] = useState(false) 
 
 
     useEffect(() => {
+        setEndList(false)
+        SetIsError(false)
         getArticles(topic, ChosenSort, Pagination, Page).then((articleList) => {
-            if(articleList.length >0) {
-            setArticles(articleList)
-            } 
+            if(articleList.length > 0) {
+                setArticles(articleList)
+                if (articleList.length < Pagination) {
+                    setEndList(true)
+                }
+            } else {
+                SetIsError(true)
+                setEndList(true)
+            }    
+        }).catch(() => {
+            SetIsError(true)
+            setEndList(true)
         })
     }, [Page, Pagination, ChosenSort, topic])
     return (
@@ -44,23 +57,23 @@ const Articles = ({ Page, setPage }) => {
             </select>
         </section>
         <ul className = "article-list">
-        {Articles.map((article) => {
+        {!IsError ? Articles.map((article) => {
             return (
-            <section className ="article-box">    
-            <Link to={`/article/${article.article_id}`} key={article.id}>
+            <Link className ="article-box" to={`/article/${article.article_id}`} key={article.id}>
+            <section>    
             <h2>{article.title}</h2> 
             <p>{article.topic}</p> 
             <p>{new Date(article.created_at).toUTCString()}</p> 
             <p>{article.author}</p> 
             <p> Votes: {article.votes}, Comments: {article.comment_count}</p> 
-            </Link> 
             </section>
+            </Link> 
             )
-        })}
+        }): <span> Error - 404 Page not Found </span> }
         </ul>
         <button className="pgeBtn" disabled={Page <=1} onClick={() => {setPage((currPage) => currPage -1)}}> Prev Page </button >
         <span> Page {Page} </span>
-        <button className="pgeBtn" onClick={() => {setPage((currPage) => currPage +1)}}> Next Page </button >
+        <button className="pgeBtn" disabled={EndList} onClick={() => {setPage((currPage) => currPage +1)}}> Next Page </button >
         </div>
     )
     

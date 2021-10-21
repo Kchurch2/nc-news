@@ -38,6 +38,11 @@ h1 {
   width:400px;
   border: 1px solid white;
   margin: 20px;
+  background-color: transparent;
+}
+
+.article-box :hover{
+  background-color: #0e836d;
 }
 
 ul {
@@ -88,6 +93,17 @@ a:hover{
  "article article";
 }
 
+@media screen and (max-width: 500px) {
+  .article {
+    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-areas:
+    "title"
+    "metadata"
+    "article";
+  }
+}
+
 .comment-list {
   text-align: left;
   width: 90%;
@@ -103,6 +119,45 @@ a:hover{
   "meta1 body"
   "meta2 body"
   "meta3 body"
+}
+
+.user-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.user-box{
+  text-align: center;
+  width: 300px;
+  height: 300px;
+  border: 1px solid white;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+  margin-bottom:20px;
+  padding: 20px;
+}
+
+.user-img{
+  height: 200px;
+  width: 200px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+
+@media screen and (max-width: 500px) {
+  .comment-list {
+    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-areas:
+    "meta1"
+    "meta2"
+    "meta3"
+    "body"
+  }
 }
 
 .comment-meta1 {
@@ -131,6 +186,24 @@ input {
   width: 50%;
   height: 30px;
   margin: 10px;
+}
+
+#login-value {
+  width: 20%;
+  height: 15px;
+  margin: 10px;
+}
+
+.login-button {
+  margin: 10px;
+}
+.login-button :hover {
+  margin: 10px;
+  background-color: #0e836d;
+}
+
+.label-login {
+  color: white
 }
 
 .metadata {

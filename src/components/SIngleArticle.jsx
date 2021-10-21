@@ -30,7 +30,7 @@ const CommentVote = ({comment}) => {
     return (
     <section className = "comment-meta2">
     <label htmlFor="add-vote" className="label"> Up-Vote: </label> 
-     <button id="add-vote" value={comment.comment_id} onClick={handleCommentVote}> {comment.votes + CommentVoteChange}</button>
+     <button disabled={!User} id="add-vote" value={comment.comment_id} onClick={handleCommentVote}> {comment.votes + CommentVoteChange}</button>
      {Error ? <span> Please Try Again </span> : null}
      </section>
      )
@@ -75,7 +75,7 @@ const CommentVote = ({comment}) => {
         <p> Author: {articleData.author}</p>
         <p> Published: {new Date(articleData.created_at).toUTCString()}</p>
         <label htmlFor="add-vote" className="label">Up-Vote: </label> 
-        <button id="add-vote" onClick={handleVote}>{ Votes + VoteChange }</button>
+        <button  disabled={!User} id="add-vote" onClick={handleVote}>{ Votes + VoteChange }</button>
         {Error ? <span> Please Try Again </span> : null}
         </section>
             <h2 className="title">{articleData.title}</h2>
@@ -84,7 +84,7 @@ const CommentVote = ({comment}) => {
         <form className="comment-input" onSubmit={handleComment}>
         <label htmlFor="comment-input" className="label"> Add a Comment</label>
         <input type='text' onChange={((e)=>{setCommentText(e.target.value)})} value={commentText} id='comment-input'></input>
-        <button type='submit'> Post Comment </button>
+        <button  disabled={!User} type='submit'> Post Comment </button>
         </form>
         <section className ="comments">
             <h3> Comments</h3>

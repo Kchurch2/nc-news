@@ -20,7 +20,7 @@ export const getArticle = async (article_id) => {
 }
 
 export const getComments = async (article_id) => {
-    const {data} = await newsApi.get(`/articles/${article_id}/comments?limit=100`)
+    const {data} = await newsApi.get(`/articles/${article_id}/comments?sort_by=votes&limit=1000`)
     return data.comments
 }
 
@@ -48,3 +48,20 @@ export const postComment = async (comment, article_id, User) => {
         return res.data.comment
     })
 }
+
+export const getUsers = async () => {
+    return newsApi.get('/users')
+    .then((res) => {
+        console.log(res.data.users)
+        return res.data.users
+    })
+}
+
+export const getUserInfo = async (username) => {
+    return newsApi.get(`/users/${username}`)
+    .then((res) => {
+        return res.data.user
+    })
+}
+
+

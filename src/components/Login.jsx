@@ -15,15 +15,16 @@ export const LoginBar = ({BadUser,setBadUser, login, User, logout}) => {
 
     return (
         <section>
-        <form onSubmit = {handleSubmit}>
-        <label htmlFor="login"></label>
+        {!User ? <form onSubmit = {handleSubmit}><label className ="label-login" htmlFor="login"> Login </label>
         <input disabled={User} value={LoginUser} onChange={((e) => {
             setLoginUser(e.target.value)
             setBadUser(null)
         })} type="text" id="login-value"></input>
         </form>
+        : null}  
         {BadUser ? <p>Invalid Username</p> : null}
-        <button onClick={handeClick}> Logout </button>
+        {User? <p> Welcome {JSON.parse(User)} </p> : null}
+        {User? <button onClick={handeClick} className="login-button"> Logout </button> : null }
         </section>
 
     )

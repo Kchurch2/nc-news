@@ -4,6 +4,7 @@ import './App.css';
 import Navbar from './components/Nav';
 import Articles from "./components/Articles";
 import SingleArticle from "./components/SIngleArticle";
+import { Users } from "./components/Users";
 import {LoginBar } from "./components/Login";
 import { checkUser } from "./utils/api";
 import axios from "axios";
@@ -60,6 +61,9 @@ function App() {
         </Route>
         <Route exact path ="/article/:article_id">
         <SingleArticle User={User}/>
+        </Route>
+        <Route exact path ="/users">
+        <Users />
         </Route>
         <Route path ="/">
         <p> Error - Page Not Found </p>
