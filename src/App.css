@@ -13,6 +13,36 @@
   }
 }
 
+header {
+display: grid;
+grid-template-columns: 1fr 1fr 1fr;
+grid-template-areas:
+ "img title login"
+ "navbar navbar navbar"
+}
+
+@media screen and (max-width: 500px) {
+  .header {
+    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-areas:
+    "title"
+    "login"
+    "navbar"
+  }
+}
+
+.page-header {
+  grid-area: title;
+}
+
+.login-bar {
+  grid-area: login;
+}
+
+
+
+
 .article-list {
   background-color: #282c34;
   max-width: 100vw;
@@ -53,14 +83,15 @@ ul {
   min-height: 30px;
   width: 100vw;
   margin: auto;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: #0fddb7;
+  grid-area: navbar;
 }
 
 .nav-list {
   justify-content: space-evenly;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left:5%;
+  padding-right:5%
 }
 
 a {
@@ -90,7 +121,16 @@ a:hover{
  grid-template-columns: 1fr 2fr;
  grid-template-areas:
  "metadata title"
+ "metadata button"
  "article article";
+}
+
+.delete-button {
+  grid-area: button;
+  height: 20px;
+  width: 200px;
+  margin: 10px;
+  padding:5px;
 }
 
 @media screen and (max-width: 500px) {
@@ -99,6 +139,7 @@ a:hover{
     display: grid;
     grid-template-areas:
     "title"
+    "button"
     "metadata"
     "article";
   }

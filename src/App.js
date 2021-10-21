@@ -48,16 +48,16 @@ function App() {
     <BrowserRouter>
     <div className="App">
       <header className="App-header">
-        <Link onClick={()=>{setPage(1)}} to="/"><h1> NC News </h1></Link>
-       <LoginBar BadUser={BadUser} setBadUser={setBadUser} login={login} User={User} logout={logout}/>    
+        <Link className="page-header" onClick={()=>{setPage(1)}} to="/"><h1> NC News </h1></Link>
+       <LoginBar className="login-bar" BadUser={BadUser} setBadUser={setBadUser} login={login} User={User} logout={logout}/>    
         <Navbar setTopics={setTopics} Topics={Topics} setPage={setPage}/>
       </header>
       <Switch>
         <Route exact path ="/">
-          <Articles Topics={Topics} Page={Page} setPage={setPage}/>
+          <Articles User={User} Topics={Topics} Page={Page} setPage={setPage}/>
         </Route>
         <Route exact path ="/articles/:topic">
-        <Articles  Topics={Topics} Page={Page} setPage={setPage}/>
+        <Articles User={User} Topics={Topics} Page={Page} setPage={setPage}/>
         </Route>
         <Route exact path ="/article/:article_id">
         <SingleArticle User={User}/>

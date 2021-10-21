@@ -65,3 +65,12 @@ export const getUserInfo = async (username) => {
 }
 
 
+export const deleteArticle = async (article_id) => {
+    console.log(article_id)
+    return newsApi.delete('/api/articles/' + parseInt(article_id))
+    .then(res => {
+        return res.rows
+        }).catch((err) => {
+        console.dir(err)
+    })
+}

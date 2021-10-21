@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom";
 import { getUsers, getUserInfo } from "../utils/api"
 
 
@@ -37,13 +36,11 @@ export const Users = () => {
         <ul className="user-list">
         {UsersList.map((user) => {
             return (
-                <Link>
                 <li key={user.username} className ="user-box">
                 {console.log(user)}
                 <h3 className="user-username"> {user.username} </h3>
                 {<UsersInfo username={user.username} />}
                 </li>
-                </Link>
             )
         })}
         </ul>

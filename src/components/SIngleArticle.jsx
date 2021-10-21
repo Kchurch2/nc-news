@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import {useParams} from "react-router-dom";
-import { getArticle, getComments, patchVotes, postComment, patchCommentVote} from "../utils/api";
+import { getArticle, getComments, patchVotes, postComment, patchCommentVote, deleteArticle} from "../utils/api";
 
 
 const SingleArticle = ({User}) => {
@@ -8,11 +8,8 @@ const [ articleData , setArticleData] = useState([])
 const [ CommentData , setCommentData] = useState([])
 const [ Votes, setVotes] = useState(0)
 const [ VoteChange , setVoteChange] = useState(0)
-
-
 const [ Error, SetError ] = useState(false)
 const [commentText, setCommentText] = useState('')
-
 const {article_id} = useParams()
 
 
@@ -36,6 +33,25 @@ const CommentVote = ({comment}) => {
      )
 }
 
+const ArticleDelete = ({articleData}) => {  
+    const [CheckUser, setCheckUser] = useState(false)
+    const handleDelete = (e) => {
+        e.preventDefault()
+        deleteArticle(article_id)
+    }
+
+    useEffect(()=> {
+        if (articleData.author === JSON.parse(User)) {
+            setCheckUser(true)
+        } else {
+            setCheckUser(false)
+        }
+    }, [articleData])
+
+    return (
+    <button onClick={handleDelete} className="delete-button" disabled={!CheckUser} value={articleData.article_id}> Delete Article </button>
+    )
+}
 
     useEffect(() => {
         getArticle(article_id).then((articleData)=> {
@@ -48,7 +64,7 @@ const CommentVote = ({comment}) => {
         getComments(article_id).then((commentData)=> {
         setCommentData(commentData)
         })
-    }, [article_id, commentText, setCommentText])
+    }, [article_id, commentText])
 
     const handleVote = () => {
         SetError(false)
@@ -79,6 +95,7 @@ const CommentVote = ({comment}) => {
         {Error ? <span> Please Try Again </span> : null}
         </section>
             <h2 className="title">{articleData.title}</h2>
+            <ArticleDelete User={User} articleData={articleData}/>
             <p className="article-body">{articleData.body}</p>
         </section>
         <form className="comment-input" onSubmit={handleComment}>
