@@ -39,6 +39,7 @@ grid-template-areas:
 }
 
 .login-bar {
+  margin-right:10px;
   grid-area: login;
   display : grid;
   grid-template-columns: 1fr 3fr;
@@ -86,8 +87,6 @@ grid-template-areas:
   grid-area: img;
   margin:10px
 }
-
-
 
 .article-list {
   background-color: #282c34;
