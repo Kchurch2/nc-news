@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #282c34;
+  background-color: #9facc5;
   min-height: 100vh;
   max-width: 100vw;
   color: white;
@@ -145,6 +145,14 @@ ul {
 }
 
 .nav-list {
+  justify-content: space-evenly;
+  padding-left:5%;
+  padding-right:5%;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
+.nav-list:hover {
   justify-content: space-evenly;
   padding-left:5%;
   padding-right:5%;
