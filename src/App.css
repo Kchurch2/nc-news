@@ -80,6 +80,8 @@ ul {
 }
 
 .nav-bar {
+  display: flex;
+  flex-direction: row;
   min-height: 30px;
   width: 100vw;
   margin: auto;
@@ -88,10 +90,20 @@ ul {
   grid-area: navbar;
 }
 
+@media screen and (max-width: 500px) {
+  .nav-bar  {
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+}
+
 .nav-list {
   justify-content: space-evenly;
   padding-left:5%;
-  padding-right:5%
+  padding-right:5%;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 a {

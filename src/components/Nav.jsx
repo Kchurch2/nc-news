@@ -21,7 +21,7 @@ const Navbar = ({ Topics, setTopics, setPage}) => {
                 </Link>
             )
         })}
-        <Link to="/users"> authors </Link>
+        <Link className="nav-list" to="/users"> authors </Link>
         </nav>
     )
     
