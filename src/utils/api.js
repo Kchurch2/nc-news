@@ -24,16 +24,16 @@ export const getComments = async (article_id) => {
     return data.comments
 }
 
-export const patchVotes = async (article_id) => {
-    return newsApi.patch(`/articles/${article_id}`, {"inc_votes": 1})
+export const patchVotes = async (article_id, num) => {
+    return newsApi.patch(`/articles/${article_id}`, {"inc_votes": num})
     .then((res)=> {
         return res.data.votes
     })
 }
 
-export const patchCommentVote = async (comment_id) => {
+export const patchCommentVote = async (comment_id, num) => {
     console.log(comment_id)
-    return newsApi.patch(`/comments/${comment_id}`, {"inc_votes": 1})
+    return newsApi.patch(`/comments/${comment_id}`, {"inc_votes": num})
     .then((res)=> {
         console.log(res.data)
         return res.data.comment
@@ -65,12 +65,12 @@ export const getUserInfo = async (username) => {
 }
 
 
-export const deleteArticle = async (article_id) => {
-    console.log(article_id)
-    return newsApi.delete('/api/articles/' + parseInt(article_id))
-    .then(res => {
-        return res.rows
-        }).catch((err) => {
-        console.dir(err)
-    })
-}
+// export const deleteArticle = async (article_id) => {
+//     console.log(article_id)
+//     return newsApi.delete('/api/articles/' + parseInt(article_id))
+//     .then(res => {
+//         return res.rows
+//         }).catch((err) => {
+//         console.dir(err)
+//     })
+// }

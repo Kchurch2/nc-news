@@ -16,7 +16,7 @@ const Navbar = ({ Topics, setTopics, setPage}) => {
         <Link onClick={()=>{setPage(1)}} className="nav-list" to="/"> home </Link>
         {Topics.map((topic) => {
             return (
-                <Link onClick={()=>{setPage(1)}}className="nav-list" key={topic.slug} to ={`/articles/${topic.slug}`}>
+                <Link onClick={()=>{setPage(1)}}className="nav-list" to ={`/articles/${topic.slug}`}>
                     {topic.slug}
                 </Link>
             )

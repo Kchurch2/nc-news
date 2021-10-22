@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import {useParams} from "react-router-dom";
-import { getArticle, getComments, patchVotes, postComment, patchCommentVote, deleteArticle} from "../utils/api";
-
+import { getArticle, getComments, patchVotes, postComment, patchCommentVote} from "../utils/api";
 
 const SingleArticle = ({User}) => {
 const [ articleData , setArticleData] = useState([])
@@ -12,49 +11,55 @@ const [ Error, SetError ] = useState(false)
 const [commentText, setCommentText] = useState('')
 const {article_id} = useParams()
 const [isError, setIsError] = useState(false)
-
+const [hasVote, setHasVote] = useState(false)
 
 const CommentVote = ({comment}) => {
     const [ CommentVoteChange , setCommentVoteChange] = useState(0)
-    const handleCommentVote = (e) => {
-        setCommentVoteChange((currVote) => { return currVote += 1})
-        patchCommentVote(e.target.value)
+    const [hasVoted, setHasVoted] = useState(false)
+    
+    const handleCommentVote = (e, num) => {
+        setHasVoted(true)
+        setCommentVoteChange((currVote) => { return currVote += num})
+        patchCommentVote(e.target.value, num)
         .catch((err)=>{
-            console.dir(err)
-            setCommentVoteChange((currVote) => { return currVote -= 1}); 
+            setCommentVoteChange((currVote) => { return currVote -= num}); 
         })
     }
 
     return (
     <section className = "comment-meta2">
-    <label htmlFor="add-vote" className="label"> Up-Vote: </label> 
-     <button disabled={!User} id="add-vote" value={comment.comment_id} onClick={handleCommentVote}> {comment.votes + CommentVoteChange}</button>
+    <label htmlFor="add-vote" className="label"> Votes: {comment.votes + CommentVoteChange}</label> 
+     <button disabled={hasVoted} id="add-vote" value={[comment.comment_id]} onClick={(e) => {handleCommentVote(e, 1)}}> +1 </button>
+     <button disabled={hasVoted} id="add-vote" value={[comment.comment_id]} onClick={(e) => {handleCommentVote(e, -1)}}> -1 </button>
      {Error ? <span> Please Try Again </span> : null}
      </section>
      )
 }
 
-const ArticleDelete = ({articleData}) => {  
-    const [CheckUser, setCheckUser] = useState(false)
-    const handleDelete = (e) => {
-        e.preventDefault()
-        deleteArticle(article_id)
+const ArticleVote = ({articleData})=> {
+    
+    const handleVote = (num) => {
+        console.log('vote')
+        SetError(false)
+        setVoteChange((currVote) => { return currVote += num})
+        setHasVote(true)
+        patchVotes(articleData.article_id, num).catch(()=>{
+            SetError(true)
+            setHasVote(false)
+            setVoteChange((currVote) => { return currVote -= num}); 
+        })
+        console.log(hasVote)
     }
-
-    useEffect(()=> {
-        if (articleData.author === JSON.parse(User)) {
-            setCheckUser(true)
-        } else {
-            setCheckUser(false)
-        }
-    }, [articleData])
-
     return (
-    <button onClick={handleDelete} className="delete-button" disabled={!CheckUser} value={articleData.article_id}> Delete Article </button>
+        <div>
+        <label htmlFor="add-vote" className="label">Votes : { Votes + VoteChange } </label> 
+        <button  disabled={hasVote} id="add-vote" onClick={()=>{handleVote(1)}}> +1 </button>
+        <button  disabled={hasVote} id="add-vote" onClick={()=>{handleVote(-1)}}> -1 </button>
+        {Error ? <span> Please Try Again </span> : null} </div>
     )
 }
 
-    useEffect(() => {
+   useEffect(() => {
         setIsError(false)
         getArticle(article_id).then((articleData)=> {
         setArticleData(articleData)
@@ -71,22 +76,11 @@ const ArticleDelete = ({articleData}) => {
         })
     }, [article_id, commentText])
 
-    const handleVote = () => {
-        SetError(false)
-        setVoteChange((currVote) => { return currVote += 1});
-        patchVotes(articleData.article_id).catch(()=>{
-            SetError(true)
-            setVoteChange((currVote) => { return currVote -= 1}); 
-        })
-    }
-
-
     const handleComment = (e) => {
         e.preventDefault()
         postComment(commentText, article_id, User)
         setCommentText('')
     }
-
 
     return (
         <div>
@@ -96,19 +90,17 @@ const ArticleDelete = ({articleData}) => {
         <p> Topic: {articleData.topic}</p>
         <p> Author: {articleData.author}</p>
         <p> Published: {new Date(articleData.created_at).toUTCString()}</p>
-        <label htmlFor="add-vote" className="label">Up-Vote: </label> 
-        <button  disabled={!User} id="add-vote" onClick={handleVote}>{ Votes + VoteChange }</button>
-        {Error ? <span> Please Try Again </span> : null}
+        {User ? <ArticleVote articleData={articleData} hasVote={hasVote} setHasVote={setHasVote}/> : null }
         </section>
             <h2 className="title">{articleData.title}</h2>
-            <ArticleDelete User={User} articleData={articleData}/>
+            {/* <ArticleDelete User={User} articleData={articleData}/> */}
             <p className="article-body">{articleData.body}</p>
         </section>
-        <form className="comment-input" onSubmit={handleComment}>
+        {User? <form className="comment-input" onSubmit={handleComment}>
         <label htmlFor="comment-input" className="label"> Add a Comment</label>
-        <input type='text' onChange={((e)=>{setCommentText(e.target.value)})} value={commentText} id='comment-input'></input>
-        <button  disabled={!User} type='submit'> Post Comment </button>
-        </form>
+        <input required type='text' onChange={((e)=>{setCommentText(e.target.value)})} value={commentText} id='comment-input'></input>
+        <button type='submit'> Post Comment </button>
+        </form> : null }
         <section className ="comments">
             <h3> Comments</h3>
             <ul>
@@ -116,7 +108,7 @@ const ArticleDelete = ({articleData}) => {
                 return(
                     <li className="comment-list" key={comment.comment_id}>
                     <p className="comment-meta1">{comment.author}</p>
-                    < CommentVote comment={comment} />
+                    {User? < CommentVote comment={comment} /> : null}
                     <p className="comment-meta3">{new Date(comment.created_at).toUTCString()}</p>
                     <p className="comment-body">{comment.body}</p>
                     </li>
@@ -129,3 +121,24 @@ const ArticleDelete = ({articleData}) => {
 }
 
 export default SingleArticle
+
+
+// const ArticleDelete = ({articleData}) => {  
+//     const [CheckUser, setCheckUser] = useState(false)
+//     const handleDelete = (e) => {
+//         e.preventDefault()
+//         deleteArticle(article_id)
+//     }
+
+//     useEffect(()=> {
+//         if (articleData.author === JSON.parse(User)) {
+//             setCheckUser(true)
+//         } else {
+//             setCheckUser(false)
+//         }
+//     }, [articleData])
+
+//     return (
+//     <button onClick={handleDelete} className="delete-button" disabled={!CheckUser} value={articleData.article_id}> Delete Article </button>
+//     )
+// }

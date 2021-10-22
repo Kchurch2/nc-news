@@ -6,7 +6,6 @@ import Articles from "./components/Articles";
 import SingleArticle from "./components/SIngleArticle";
 import { Users } from "./components/Users";
 import {LoginBar } from "./components/Login";
-import { checkUser } from "./utils/api";
 import axios from "axios";
 
 

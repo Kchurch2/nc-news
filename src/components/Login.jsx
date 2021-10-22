@@ -17,7 +17,7 @@ export const LoginBar = ({BadUser,setBadUser, login, User, logout}) => {
         <div>
         {BadUser ? <p className ="label-login">Invalid Username</p> : null}
         {!User ? <form onSubmit = {handleSubmit}><label className ="label-login" htmlFor="login"> Login </label>
-        <input disabled={User} value={LoginUser} onChange={((e) => {
+        <input required disabled={User} value={LoginUser} onChange={((e) => {
             setLoginUser(e.target.value)
             setBadUser(null)
         })} type="text" id="login-value"></input>

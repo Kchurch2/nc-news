@@ -14,7 +14,7 @@ export const Users = () => {
             getUserInfo(username.username).then((res) => {
                 setUserInfo(res)
             })
-        }, [])
+        }, [username])
 
         return (
             <div>
