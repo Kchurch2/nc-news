@@ -39,7 +39,7 @@ grid-template-areas:
 }
 
 .login-bar {
-  margin-right:10px;
+  margin-right:50px;
   grid-area: login;
   display : grid;
   grid-template-columns: 1fr 3fr;
@@ -74,9 +74,9 @@ grid-template-areas:
 .label-login {
   color: white;
   font-size: medium;
-  margin-top: 10px;
+  margin-top: 0px;
   margin-bottom: 0;
-  margin-right:10px;
+  margin-right:0px;
   grid-area: name;
 }
 
