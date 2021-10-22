@@ -11,6 +11,7 @@ const [ VoteChange , setVoteChange] = useState(0)
 const [ Error, SetError ] = useState(false)
 const [commentText, setCommentText] = useState('')
 const {article_id} = useParams()
+const [isError, setIsError] = useState(false)
 
 
 const CommentVote = ({comment}) => {
@@ -54,9 +55,13 @@ const ArticleDelete = ({articleData}) => {
 }
 
     useEffect(() => {
+        setIsError(false)
         getArticle(article_id).then((articleData)=> {
         setArticleData(articleData)
         setVotes(articleData.votes)
+        })
+        .catch((err) => {
+            setIsError(true)
         })
     }, [article_id])
 
@@ -85,6 +90,7 @@ const ArticleDelete = ({articleData}) => {
 
     return (
         <div>
+        {isError ? <p> 404 - No found </p> : null}
         <section className="article">
         <section className="metadata">
         <p> Topic: {articleData.topic}</p>
