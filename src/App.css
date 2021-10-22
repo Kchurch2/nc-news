@@ -13,17 +13,19 @@
   }
 }
 
-header {
+.App-header {
 display: grid;
 grid-template-columns: 1fr 1fr 1fr;
+grid-template-rows: 3fr 1fr;
 grid-template-areas:
  "img title login"
  "navbar navbar navbar"
 }
 
 @media screen and (max-width: 500px) {
-  .header {
+  .App-header {
     grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 3fr;
     display: grid;
     grid-template-areas:
     "title"
@@ -38,8 +40,52 @@ grid-template-areas:
 
 .login-bar {
   grid-area: login;
+  display : grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-areas:
+  "login-form login-form"
+  "img name"
+  "img button";
 }
 
+.login-form {
+  margin: 10px;
+  grid-area: login-form;
+}
+
+#login-value {
+  width: 20%;
+  height: 15px;
+  margin: 10px;
+}
+
+.login-button {
+  margin: 10px;
+  grid-area: button;
+}
+
+.login-button :hover {
+  margin: 10px;
+  background-color: #0e836d;
+  grid-area: button;
+}
+
+.label-login {
+  color: white;
+  font-size: medium;
+  margin-top: 10px;
+  margin-bottom: 0;
+  margin-right:10px;
+  grid-area: name;
+}
+
+.profile-img {
+  justify-content: center;
+  height:50px;
+  width: auto;
+  grid-area: img;
+  margin:10px
+}
 
 
 
@@ -241,26 +287,6 @@ input {
   margin: 10px;
 }
 
-#login-value {
-  width: 20%;
-  height: 15px;
-  margin: 10px;
-}
-
-.login-button {
-  margin: 10px;
-}
-.login-button :hover {
-  margin: 10px;
-  background-color: #0e836d;
-}
-
-.label-login {
-  color: white;
-  font-size: medium;
-  margin-top: 10px;
-  margin-bottom: 0;
-}
 
 .metadata {
   grid-area: metadata;
@@ -294,5 +320,7 @@ input {
 .comment-input {
   margin:20px
 }
+
+
 
 

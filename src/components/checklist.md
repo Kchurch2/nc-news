@@ -19,14 +19,14 @@
 ### Articles
 - [✅] Serves all articles / top articles
 - [✅] Can vote on articles
-- [ ] Can vote a maximum of once in either direction per page load
+- [✅] Can vote a maximum of once in either direction per page load
 - [✅] Votes are persistent when page is refreshed
 - [✅] Topic pages load only relevant articles (especially when navigating from one topic page to another)
 - [✅] Can sort articles by date created / comment_count / votes
 ### Individual Article / Comments
 - [✅] Individual articles are served with comments
 - [✅] Can vote on comments
-- [ ] Can vote a maximum of once in either direction per page load
+- [✅] Can vote a maximum of once in either direction per page load
 - [✅] Votes are persistent when page is refreshed
 - [✅] Can post new comments, which are persistent
 - [ ] Can only delete comments of logged in user

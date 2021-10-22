@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { getUserInfo } from "../utils/api"
 
 export const LoginBar = ({BadUser,setBadUser, login, User, logout}) => {
     const [LoginUser, setLoginUser] = useState('')
@@ -13,10 +14,26 @@ export const LoginBar = ({BadUser,setBadUser, login, User, logout}) => {
         logout()
     }
 
+    const UserImg = ({User}) => {
+        const [Image, setImage] = useState('')
+        console.log(User)
+
+        useEffect(() => {
+        getUserInfo(JSON.parse(User)).then((res) => {
+            console.log(res)
+            setImage(res.avatar_url)
+        })
+        }, [User])
+
+        return (
+            <img className="profile-img" src={Image} alt="profile-pic"></img>
+        )
+    }
+
     return (
-        <div>
+        <section className="login-bar">
         {BadUser ? <p className ="label-login">Invalid Username</p> : null}
-        {!User ? <form onSubmit = {handleSubmit}><label className ="label-login" htmlFor="login"> Login </label>
+        {!User ? <form className ="login-form" onSubmit = {handleSubmit}><label htmlFor="login"> Login </label>
         <input required disabled={User} value={LoginUser} onChange={((e) => {
             setLoginUser(e.target.value)
             setBadUser(null)
@@ -24,9 +41,10 @@ export const LoginBar = ({BadUser,setBadUser, login, User, logout}) => {
         <button type="submit"> submit</button>
         </form>
         : null}  
+        {User? <UserImg User={User} />: null}
         {User? <p className ="label-login"> Welcome {JSON.parse(User)} </p> : null}
         {User? <button onClick={handeClick} className="login-button"> Logout </button> : null }
-        </div>
+        </section>
 
     )
 }

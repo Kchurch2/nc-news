@@ -48,7 +48,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Link className="page-header" onClick={()=>{setPage(1)}} to="/"><h1> NC News </h1></Link>
-       <LoginBar className="login-bar" BadUser={BadUser} setBadUser={setBadUser} login={login} User={User} logout={logout}/>    
+        <LoginBar className="login-bar" BadUser={BadUser} setBadUser={setBadUser} login={login} User={User} logout={logout}/>    
         <Navbar setTopics={setTopics} Topics={Topics} setPage={setPage}/>
       </header>
       <Switch>
