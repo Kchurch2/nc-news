@@ -32,8 +32,8 @@ const CommentVote = ({comment}) => {
     return (
     <section className = "comment-meta2">
     <label htmlFor="add-vote" className="label"> Votes: {comment.votes + CommentVoteChange}</label> 
-     <button disabled={hasVoted} id="add-vote" value={[comment.comment_id]} onClick={(e) => {handleCommentVote(e, 1)}}> +1 </button>
-     <button disabled={hasVoted} id="add-vote" value={[comment.comment_id]} onClick={(e) => {handleCommentVote(e, -1)}}> -1 </button>
+     <button disabled={hasVoted} className="vote-button" id="add-vote" value={[comment.comment_id]} onClick={(e) => {handleCommentVote(e, 1)}}> +1 </button>
+     <button disabled={hasVoted} className="vote-button" id="add-vote" value={[comment.comment_id]} onClick={(e) => {handleCommentVote(e, -1)}}> -1 </button>
      {Error ? <span> Please Try Again </span> : null}
      </section>
      )
@@ -77,8 +77,8 @@ const ArticleVote = ({articleData})=> {
     return (
         <div>
         <label htmlFor="add-vote" className="label">Votes : { Votes + VoteChange } </label> 
-        <button  disabled={hasVote} id="add-vote" onClick={()=>{handleVote(1)}}> +1 </button>
-        <button  disabled={hasVote} id="add-vote" onClick={()=>{handleVote(-1)}}> -1 </button>
+        <button  disabled={hasVote} className="vote-button" id="add-vote" onClick={()=>{handleVote(1)}}> +1 </button>
+        <button  disabled={hasVote} className="vote-button" id="add-vote" onClick={()=>{handleVote(-1)}}> -1 </button>
         {Error ? <span> Please Try Again </span> : null} </div>
     )
 }
@@ -94,6 +94,12 @@ const ArticleVote = ({articleData})=> {
         })
     }, [article_id, deleteArticle])
 
+    useEffect(() => {
+        getComments(article_id, ChosenSort).then((commentData)=> {
+        setCommentData(commentData)
+        })
+    }, [article_id, ChosenSort, submit])
+
 
     const handleComment = (e) => {
         e.preventDefault()
@@ -102,15 +108,9 @@ const ArticleVote = ({articleData})=> {
         setSubmit(true)
     }
 
-    useEffect(() => {
-        getComments(article_id, ChosenSort).then((commentData)=> {
-        setCommentData(commentData)
-        })
-    }, [article_id, ChosenSort, submit])
-
     return (
         <div>
-        {deleteArticle ? <Link to="/">Article Removed - Return Home </Link> : null}
+        {deleteArticle ? <Link to="/"> Article Removed - Return Home </Link> : null }
         {isError ? <p> 404 - No found </p> : null}
         <section className="article">
         <section className="metadata">
@@ -120,7 +120,7 @@ const ArticleVote = ({articleData})=> {
         {User ? <ArticleVote articleData={articleData} hasVote={hasVote} setHasVote={setHasVote}/> : null }
         </section>
             <h2 className="title">{articleData.title}</h2>
-            <ArticleDelete User={User} articleData={articleData}/>
+            {User ? <ArticleDelete className="delete-button" User={User} articleData={articleData}/> : null }
             <p className="article-body">{articleData.body}</p>
         </section>
         {User? <form className="comment-input" onSubmit={handleComment}>
@@ -129,7 +129,7 @@ const ArticleVote = ({articleData})=> {
             setCommentText(e.target.value)
             setSubmit(false)
             })} value={commentText} id='comment-input'></input>
-        <button type='submit'> Post Comment </button>
+        <button className= "login-button" type='submit'> Post Comment </button>
         </form> : null }
         <section className ="comments">
             <h3> Comments</h3>

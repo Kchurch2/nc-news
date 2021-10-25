@@ -7,6 +7,18 @@
   padding-bottom: 30px;
 }
 
+.vote-button {
+  padding :2px;
+  margin: 2px;
+}
+
+.vote-button:hover {
+  padding :2px;
+  margin: 2px;
+  background-color: #0fddb7;
+  border: white 2px solid
+}
+
 @media screen and (max-width: 500px) {
   .article-list  {
     flex-direction: column;
@@ -65,9 +77,10 @@ grid-template-areas:
   grid-area: button;
 }
 
-.login-button :hover {
+.login-button:hover {
   margin: 10px;
-  background-color: #0e836d;
+  background-color: #0fddb7;
+  border: white 2px solid;
   grid-area: button;
 }
 
@@ -192,10 +205,22 @@ a:hover{
 }
 
 .delete-button {
+  text-align: center;
   grid-area: button;
-  height: 20px;
-  width: 200px;
-  margin: 10px;
+  height: 40px;
+  width: 50%;
+  margin: auto;
+  padding:5px;
+}
+
+.delete-button:hover{
+  text-align: center;
+  background-color: #0fddb7;
+  border: white 2px solid;
+  grid-area: button;
+  height: 40px;
+  width: 50%;
+  margin: auto;
   padding:5px;
 }
 
