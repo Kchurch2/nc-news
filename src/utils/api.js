@@ -19,8 +19,8 @@ export const getArticle = async (article_id) => {
     return data.article
 }
 
-export const getComments = async (article_id) => {
-    const {data} = await newsApi.get(`/articles/${article_id}/comments?sort_by=votes&limit=1000`)
+export const getComments = async (article_id, sort_by) => {
+    const {data} = await newsApi.get(`/articles/${article_id}/comments?sort_by=${sort_by}&limit=1000`)
     return data.comments
 }
 
@@ -65,12 +65,9 @@ export const getUserInfo = async (username) => {
 }
 
 
-// export const deleteArticle = async (article_id) => {
-//     console.log(article_id)
-//     return newsApi.delete('/api/articles/' + parseInt(article_id))
-//     .then(res => {
-//         return res.rows
-//         }).catch((err) => {
-//         console.dir(err)
-//     })
-// }
+export const removeArticle = async (article_id) => {
+    return newsApi.delete(`/articles/${article_id}`)
+    .catch((err) => {
+        console.dir(err)
+    })
+}

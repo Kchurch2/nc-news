@@ -36,7 +36,7 @@
 This is dependent on the functionality of your API though_**
 ---
 ### Additional functionality:
-- [ ] sort comments by date created / votes
+- [✅]] sort comments by date created / votes
 - [✅] navigate over pages of articles (if implemented in back-end)
 - [ ] navigate over pages of comments (if implemented in back-end)
 - [ ] filter / display articles by specific user

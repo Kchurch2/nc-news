@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import {useParams} from "react-router-dom";
-import { getArticle, getComments, patchVotes, postComment, patchCommentVote} from "../utils/api";
+import {useParams, Link} from "react-router-dom";
+import { getArticle, getComments, patchVotes, postComment, patchCommentVote, removeArticle} from "../utils/api";
 
 const SingleArticle = ({User}) => {
 const [ articleData , setArticleData] = useState([])
@@ -8,10 +8,13 @@ const [ CommentData , setCommentData] = useState([])
 const [ Votes, setVotes] = useState(0)
 const [ VoteChange , setVoteChange] = useState(0)
 const [ Error, SetError ] = useState(false)
-const [commentText, setCommentText] = useState('')
-const {article_id} = useParams()
-const [isError, setIsError] = useState(false)
-const [hasVote, setHasVote] = useState(false)
+const [ commentText, setCommentText ] = useState('')
+const [ submit, setSubmit ] = useState(false)
+const { article_id} = useParams()
+const [ isError, setIsError ] = useState(false)
+const [ hasVote, setHasVote ] = useState(false)
+const [ ChosenSort, setChosenSort ] = useState('created_at')
+const [deleteArticle, setDeleteArticle] = useState(false)
 
 const CommentVote = ({comment}) => {
     const [ CommentVoteChange , setCommentVoteChange] = useState(0)
@@ -34,6 +37,27 @@ const CommentVote = ({comment}) => {
      {Error ? <span> Please Try Again </span> : null}
      </section>
      )
+}
+
+const ArticleDelete = ({articleData}) => {  
+    const [CheckUser, setCheckUser] = useState(false)
+    const handleDelete = (e) => {
+        e.preventDefault()
+        removeArticle(article_id)
+        setDeleteArticle(true)
+    }
+
+    useEffect(()=> {
+        if (articleData.author === JSON.parse(User)) {
+            setCheckUser(true)
+        } else {
+            setCheckUser(false)
+        }
+    }, [articleData])
+
+    return (
+    <button onClick={handleDelete} className="delete-button" disabled={!CheckUser} value={articleData.article_id}> Delete Article </button>
+    )
 }
 
 const ArticleVote = ({articleData})=> {
@@ -68,22 +92,25 @@ const ArticleVote = ({articleData})=> {
         .catch((err) => {
             setIsError(true)
         })
-    }, [article_id])
+    }, [article_id, deleteArticle])
 
-    useEffect(() => {
-        getComments(article_id).then((commentData)=> {
-        setCommentData(commentData)
-        })
-    }, [article_id, commentText])
 
     const handleComment = (e) => {
         e.preventDefault()
         postComment(commentText, article_id, User)
         setCommentText('')
+        setSubmit(true)
     }
+
+    useEffect(() => {
+        getComments(article_id, ChosenSort).then((commentData)=> {
+        setCommentData(commentData)
+        })
+    }, [article_id, ChosenSort, submit])
 
     return (
         <div>
+        {deleteArticle ? <Link to="/">Article Removed - Return Home </Link> : null}
         {isError ? <p> 404 - No found </p> : null}
         <section className="article">
         <section className="metadata">
@@ -93,16 +120,28 @@ const ArticleVote = ({articleData})=> {
         {User ? <ArticleVote articleData={articleData} hasVote={hasVote} setHasVote={setHasVote}/> : null }
         </section>
             <h2 className="title">{articleData.title}</h2>
-            {/* <ArticleDelete User={User} articleData={articleData}/> */}
+            <ArticleDelete User={User} articleData={articleData}/>
             <p className="article-body">{articleData.body}</p>
         </section>
         {User? <form className="comment-input" onSubmit={handleComment}>
         <label htmlFor="comment-input" className="label"> Add a Comment</label>
-        <input required type='text' onChange={((e)=>{setCommentText(e.target.value)})} value={commentText} id='comment-input'></input>
+        <input required type='text' onChange={((e)=>{
+            setCommentText(e.target.value)
+            setSubmit(false)
+            })} value={commentText} id='comment-input'></input>
         <button type='submit'> Post Comment </button>
         </form> : null }
         <section className ="comments">
             <h3> Comments</h3>
+            <select id="sort-by"
+                name="sort-by"
+                onChange={((e) => {
+                    e.preventDefault();
+                    setChosenSort(e.target.value);
+                })}>
+                <option value="created_at" selected> View Most Recent</option>
+                <option value="votes" >View Most Popular</option>           
+            </select>
             <ul>
             {CommentData.map((comment) => {
                 return(
@@ -123,22 +162,3 @@ const ArticleVote = ({articleData})=> {
 export default SingleArticle
 
 
-// const ArticleDelete = ({articleData}) => {  
-//     const [CheckUser, setCheckUser] = useState(false)
-//     const handleDelete = (e) => {
-//         e.preventDefault()
-//         deleteArticle(article_id)
-//     }
-
-//     useEffect(()=> {
-//         if (articleData.author === JSON.parse(User)) {
-//             setCheckUser(true)
-//         } else {
-//             setCheckUser(false)
-//         }
-//     }, [articleData])
-
-//     return (
-//     <button onClick={handleDelete} className="delete-button" disabled={!CheckUser} value={articleData.article_id}> Delete Article </button>
-//     )
-// }
